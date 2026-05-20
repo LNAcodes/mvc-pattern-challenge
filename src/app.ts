@@ -3,6 +3,7 @@ import nunjucks from "nunjucks";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import postRoutes from "./routes/postRoutes.js";
+import apiRoutes from "./routes/apiRoutes.js";
 
 const app = express();
 
@@ -16,7 +17,7 @@ nunjucks.configure(projectRoot, { autoescape: true, express: app });
 app.use("/assets", express.static(assetsDir));
 app.use("/css", express.static(cssDir));
 app.use("/", postRoutes);
-console.log("Routes mounted");
+app.use("/api", apiRoutes);
 
 const port = Number(process.env.PORT) || 3000;
 
