@@ -2,10 +2,10 @@
   "name": "mvc-pattern-challenge",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/app.ts",
   "scripts": {
-    "dev": "nodemon",
-    "start": "tsx src/app.ts",
+    "dev": "bun --watch src/app.ts",
+    "start": "bun run src/app.ts",
     "typecheck": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

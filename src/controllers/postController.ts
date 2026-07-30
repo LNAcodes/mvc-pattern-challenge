@@ -45,7 +45,7 @@ export function listPosts(req: Request, res: Response) {
     createdAt: formatDate(post.createdAt),
   }));
 
-  res.render("index.html", {
+  res.render("index", {
     posts: view,
     controls: {
       author: authorFilter,
@@ -73,19 +73,19 @@ export function showPost(req: Request<{ slug: string }>, res: Response) {
     res.status(404).send("Post not found");
     return;
   }
-  res.render("post.html", {
+  res.render("post", {
     post: { ...post, createdAt: formatDate(post.createdAt) },
   });
 }
 
 export function showContact(_req: Request, res: Response) {
-  res.render("contact.html");
+  res.render("contact");
 }
 
 export function showAbout(_req: Request, res: Response) {
-  res.render("about.html");
+  res.render("about");
 }
 
 export function showExamplePost(_req: Request, res: Response) {
-  res.render("postExample.html");
+  res.render("postExample");
 }

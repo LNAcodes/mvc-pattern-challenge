@@ -6,6 +6,7 @@ import postRoutes from "./routes/postRoutes.js";
 import apiRoutes from "./routes/apiRoutes.js";
 
 const app = express();
+app.set("view engine", "njk");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,7 +14,10 @@ const projectRoot = path.resolve(__dirname, "..");
 const assetsDir = path.join(projectRoot, "src", "assets");
 const cssDir = path.join(projectRoot, "src", "css");
 
-nunjucks.configure(projectRoot, { autoescape: true, express: app });
+nunjucks.configure(path.join(projectRoot, "views"), {
+  autoescape: true,
+  express: app,
+});
 app.use("/assets", express.static(assetsDir));
 app.use("/css", express.static(cssDir));
 app.use("/", postRoutes);
