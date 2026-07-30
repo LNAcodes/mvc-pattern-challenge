@@ -21,7 +21,9 @@ const cssDir = path.join(projectRoot, "src", "css");
 nunjucks.configure(path.join(projectRoot, "views"), {
   autoescape: true,
   express: app,
+  watch: true,
 });
+
 app.use("/assets", express.static(assetsDir));
 app.use("/css", express.static(cssDir));
 app.use(logger);

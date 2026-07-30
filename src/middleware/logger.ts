@@ -17,7 +17,6 @@ async function fileExists(filePath: string): Promise<boolean> {
 
 export async function ensureLogFile(filePath: string): Promise<void> {
   const exists = await fileExists(filePath);
-
   if (!exists) {
     await writeFile(filePath, "", { encoding: "utf-8" });
   }

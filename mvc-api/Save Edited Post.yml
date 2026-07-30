@@ -1,0 +1,19 @@
+info:
+  name: Save Edited Post
+  type: http
+  seq: 12
+
+http:
+  method: POST
+  url: http://localhost:3000/admin/posts/:slug
+  params:
+    - name: slug
+      value: ""
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
