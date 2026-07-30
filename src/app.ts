@@ -4,6 +4,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import postRoutes from "./routes/postRoutes.js";
 import apiRoutes from "./routes/apiRoutes.js";
+import { logger } from "./middleware/logger.js";
+import { ensureLogFile } from "./middleware/logger.js";
+
+const LOG_FILE = path.join(process.cwd(), "logs", "logs.txt");
 
 const app = express();
 app.set("view engine", "njk");
@@ -20,11 +24,17 @@ nunjucks.configure(path.join(projectRoot, "views"), {
 });
 app.use("/assets", express.static(assetsDir));
 app.use("/css", express.static(cssDir));
+app.use(logger);
 app.use("/", postRoutes);
 app.use("/api", apiRoutes);
 
 const port = Number(process.env.PORT) || 3000;
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+async function startServer() {
+  await ensureLogFile(LOG_FILE);
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
+}
+
+startServer();
