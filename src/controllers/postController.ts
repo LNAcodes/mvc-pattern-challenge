@@ -11,8 +11,8 @@ function formatDate(unix: number): string {
   });
 }
 
-export function listPosts(req: Request, res: Response) {
-  const posts = getAllPosts();
+export async function listPosts(req: Request, res: Response) {
+  const posts = await getAllPosts();
 
   const authorFilter =
     typeof req.query.author === "string" ? req.query.author.trim() : "";
@@ -58,7 +58,7 @@ export function listPosts(req: Request, res: Response) {
   });
 }
 
-export function showPost(req: Request<{ slug: string }>, res: Response) {
+export async function showPost(req: Request<{ slug: string }>, res: Response) {
   const slug = Array.isArray(req.params.slug)
     ? req.params.slug[0]
     : req.params.slug;
@@ -68,7 +68,7 @@ export function showPost(req: Request<{ slug: string }>, res: Response) {
     return;
   }
 
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) {
     res.status(404).send("Post not found");
     return;

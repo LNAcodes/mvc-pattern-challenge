@@ -38,24 +38,30 @@ export function writePosts(posts: Post[]): void {
   fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2), "utf8");
 }
 
-export async function addPost(post: Post): void {
-  const posts = getAllPosts();
-  posts.push(post);
-  writePosts(posts);
+export async function addPost(post: Post): Promise<void> {
+  // TO DO:
+  // const posts = getAllPosts();
+  // posts.push(post);
+  // writePosts(posts);
 }
 
-export async function updatePost(slug: string, changes: Partial<Post>): void {
-  const posts = getAllPosts();
-  const index = posts.findIndex((post) => slugify(post.title) === slug);
-  // if Post not found, cancel
-  if (index === -1) return;
-  // change the post at this position, keep all old fields, change new fields
-  posts[index] = { ...posts[index], ...changes };
-  writePosts(posts);
+export async function updatePost(
+  slug: string,
+  changes: Partial<Post>,
+): Promise<void> {
+  // TO DO:
+  // const posts = getAllPosts();
+  // const index = posts.findIndex((post) => slugify(post.title) === slug);
+  // // if Post not found, cancel
+  // if (index === -1) return;
+  // // change the post at this position, keep all old fields, change new fields
+  // posts[index] = { ...posts[index], ...changes };
+  // writePosts(posts);
 }
 
-export async function deletePost(slug: string): void {
-  const posts = getAllPosts();
-  const filtered = posts.filter((post) => slugify(post.title) !== slug);
-  writePosts(filtered);
+export async function deletePost(slug: string): Promise<void> {
+  // TO DO:
+  // const posts = getAllPosts();
+  // const filtered = posts.filter((post) => slugify(post.title) !== slug);
+  // writePosts(filtered);
 }

@@ -13,6 +13,7 @@ export async function connectDB(): Promise<Database> {
   });
 
   //SQL is run immediately, server starts even without seed
+  // The SQL statement is passed as a template string so it can span multiple lines for readability. await blocks until the statement finishes, so by the time connectDB returns, the table is guaranteed to exist.
   await db.exec(`
     CREATE TABLE IF NOT EXISTS posts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
