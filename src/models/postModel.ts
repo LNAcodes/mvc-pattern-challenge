@@ -1,5 +1,3 @@
-import fs from "node:fs";
-import path from "node:path";
 import { getDB } from "../db/database.js";
 
 export interface Post {
@@ -11,7 +9,7 @@ export interface Post {
   content: string;
 }
 
-const postsFilePath = path.join(__dirname, "..", "..", "data", "posts.json");
+// const postsFilePath = path.join(__dirname, "..", "..", "data", "posts.json");
 
 export function slugify(title: string): string {
   return title
@@ -33,10 +31,10 @@ export async function getPostBySlug(slug: string): Promise<Post | undefined> {
   return posts.find((post) => slugify(post.title) === slug);
 }
 
-export function writePosts(posts: Post[]): void {
-  // posts = what I want to parse, null = no filter, 2 = Pretty-print, indentation with 2 spaces, human readable
-  fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2), "utf8");
-}
+// export function writePosts(posts: Post[]): void {
+//   // posts = what I want to parse, null = no filter, 2 = Pretty-print, indentation with 2 spaces, human readable
+//   fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2), "utf8");
+// }
 
 export async function addPost(post: Post): Promise<void> {
   // TO DO:
