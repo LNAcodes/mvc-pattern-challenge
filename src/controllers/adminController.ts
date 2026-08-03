@@ -9,8 +9,8 @@ import {
 } from "../models/postModel.js";
 import sanitizeHtml from "sanitize-html";
 
-export function listAdminPosts(_req: Request, res: Response) {
-  const posts = getAllPosts();
+export async function listAdminPosts(_req: Request, res: Response) {
+  const posts = await getAllPosts();
   const postsWithSlug = posts.map((post) => ({
     ...post,
     slug: slugify(post.title),
@@ -22,7 +22,7 @@ export function showNewPostForm(_req: Request, res: Response) {
   res.render("adminNew");
 }
 
-export function createPost(req: Request, res: Response) {
+export async function createPost(req: Request, res: Response) {
   const newPost = {
     title: req.body.title,
     image: req.body.image,
@@ -41,7 +41,7 @@ export function createPost(req: Request, res: Response) {
   res.redirect("/admin");
 }
 
-export function showEditPostForm(
+export async function showEditPostForm(
   req: Request<{ slug: string }>,
   res: Response,
 ) {
@@ -53,7 +53,7 @@ export function showEditPostForm(
     res.status(400).send("Invalid slug");
     return;
   }
-  const newPost = getPostBySlug(slug);
+  const newPost = await getPostBySlug(slug);
   if (!newPost) {
     res.status(404).send("Post not found");
     return;
@@ -63,7 +63,7 @@ export function showEditPostForm(
   });
 }
 
-export function handleUpdatePost(
+export async function handleUpdatePost(
   req: Request<{ slug: string }>,
   res: Response,
 ) {
@@ -84,7 +84,7 @@ export function handleUpdatePost(
   res.redirect("/admin");
 }
 
-export function handleDeletePost(
+export async function handleDeletePost(
   req: Request<{ slug: string }>,
   res: Response,
 ) {

@@ -5,7 +5,20 @@ info:
 
 http:
   method: POST
-  url: http://localhost:3000/admin/posts
+  url: http://localhost:3000//admin/posts/black-the-absence-not-the-presence-of-color
+  body:
+    type: form-urlencoded
+    data:
+      - name: "title:"
+        value: Test Post
+      - name: "image:"
+        value: test.jpg
+      - name: "author:"
+        value: Test Author
+      - name: "teaser:"
+        value: Test Teaser
+      - name: "content:"
+        value: <p>Test Content</p>
   auth: inherit
 
 settings:
