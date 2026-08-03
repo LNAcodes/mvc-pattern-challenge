@@ -1,0 +1,29 @@
+{% extends "_baseLayout.njk" %}
+{% block main_content %}
+  <div class="container px-4 px-lg-5">
+    <h1>Edit Post</h1>
+    <form action="/admin/posts/{{ post.slug }}" method="POST">
+      <div>
+        <label>Title</label>
+        <input type="text" name="title" value="{{ post.title }}" />
+      </div>
+      <div>
+        <label>Image</label>
+        <input type="text" name="image" value="{{ post.image }}" />
+      </div>
+      <div>
+        <label>Author</label>
+        <input type="text" name="author" value="{{ post.author }}" />
+      </div>
+      <div>
+        <label>Teaser</label>
+        <textarea name="teaser">{{ post.teaser }}</textarea>
+      </div>
+      <div>
+        <label>Content</label>
+        <textarea name="content">{{ post.content }}</textarea>
+      </div>
+      <button type="submit">Save</button>
+    </form>
+  </div>
+{% endblock main_content %}

@@ -1,0 +1,18 @@
+{% extends "_baseLayout.njk" %}
+{% block main_content %}
+  <div class="container px-4 px-lg-5">
+    <h1>Admin Panel</h1>
+    <a href="/admin/posts/new">+ Neuer Post</a>
+
+    {% for post in posts %}
+      <div>
+        <h2>{{ post.title }}</h2>
+        <a href="/admin/posts/{{ post.slug }}/edit">Edit</a>
+        <form action="/admin/posts/{{ post.slug }}/delete" method="POST">
+          <button type="submit">Delete</button>
+        </form>
+      </div>
+      <hr />
+    {% endfor %}
+  </div>
+{% endblock main_content %}

@@ -1,0 +1,29 @@
+{% extends "_baseLayout.njk" %}
+{% block main_content %}
+  <div class="container px-4 px-lg-5">
+    <h1>New Post</h1>
+    <form action="/admin/posts" method="POST">
+      <div>
+        <label>Title</label>
+        <input type="text" name="title" />
+      </div>
+      <div>
+        <label>Image</label>
+        <input type="text" name="image" />
+      </div>
+      <div>
+        <label>Author</label>
+        <input type="text" name="author" />
+      </div>
+      <div>
+        <label>Teaser</label>
+        <textarea name="teaser"></textarea>
+      </div>
+      <div>
+        <label>Content</label>
+        <textarea name="content"></textarea>
+      </div>
+      <button type="submit">Save</button>
+    </form>
+  </div>
+{% endblock main_content %}

@@ -1,18 +1,20 @@
 import { Router } from "express";
 import {
-  listPosts,
-  showAbout,
-  showContact,
-  showExamplePost,
-  showPost,
+  listAdminPosts,
+  showNewPostForm,
+  createPost,
+  showEditPostForm,
+  handleUpdatePost,
+  handleDeletePost,
 } from "../controllers/adminController.js";
 
 const router = Router();
 
-router.get("/", listPosts);
-router.get("/posts/:slug", showPost);
-router.get("/contact", showContact);
-router.get("/about", showAbout);
-router.get("/example-post", showExamplePost);
+router.get("/", listAdminPosts);
+router.get("/posts/new", showNewPostForm);
+router.get("/posts/:slug/edit", showEditPostForm);
+router.post("/posts", createPost);
+router.post("/posts/:slug", handleUpdatePost);
+router.post("/posts/:slug/delete", handleDeletePost);
 
 export default router;

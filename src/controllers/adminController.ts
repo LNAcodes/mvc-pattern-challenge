@@ -5,11 +5,17 @@ import {
   addPost,
   updatePost,
   deletePost,
+  slugify,
 } from "../models/postModel.js";
+import sanitizeHtml from "sanitize-html";
 
 export function listAdminPosts(_req: Request, res: Response) {
   const posts = getAllPosts();
-  res.render("admin", { posts });
+  const postsWithSlug = posts.map((post) => ({
+    ...post,
+    slug: slugify(post.title),
+  }));
+  res.render("admin", { posts: postsWithSlug });
 }
 
 export function showNewPostForm(_req: Request, res: Response) {
@@ -21,9 +27,15 @@ export function createPost(req: Request, res: Response) {
     title: req.body.title,
     image: req.body.image,
     author: req.body.author,
-    createdAt: req.body.createdAt,
+    createdAt: Number(req.body.createdAt),
     teaser: req.body.teaser,
-    content: req.body.content,
+    content: sanitizeHtml(req.body.content, {
+      allowedTags: ["p", "h1", "h2", "h3", "a", "ul", "ol", "li", "img"],
+      allowedAttributes: {
+        a: ["href"],
+        img: ["src", "alt"],
+      },
+    }),
   };
   addPost(newPost);
   res.redirect("/admin");

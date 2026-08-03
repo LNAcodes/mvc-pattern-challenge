@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { getDB } from "../db/database.js";
 
 export interface Post {
   title: string;
@@ -19,14 +20,17 @@ export function slugify(title: string): string {
     .replace(/^-|-$/g, "");
 }
 
-export function getAllPosts(): Post[] {
-  const raw = fs.readFileSync(postsFilePath, "utf8");
-  // reading data NOW, that's why no import from data/posts.json, because then we would have to start the server every time again when data changes or grows
-  return JSON.parse(raw) as Post[];
+export async function getAllPosts(): Promise<Post[]> {
+  const db = getDB();
+  return await db.all<Post[]>("SELECT * FROM posts");
+  // const raw = fs.readFileSync(postsFilePath, "utf8");
+  // // reading data NOW, that's why no import from data/posts.json, because then we would have to start the server every time again when data changes or grows
+  // return JSON.parse(raw) as Post[];
 }
 
-export function getPostBySlug(slug: string): Post | undefined {
-  return getAllPosts().find((post) => slugify(post.title) === slug);
+export async function getPostBySlug(slug: string): Promise<Post | undefined> {
+  const posts = await getAllPosts();
+  return posts.find((post) => slugify(post.title) === slug);
 }
 
 export function writePosts(posts: Post[]): void {
@@ -34,13 +38,13 @@ export function writePosts(posts: Post[]): void {
   fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2), "utf8");
 }
 
-export function addPost(post: Post): void {
+export async function addPost(post: Post): void {
   const posts = getAllPosts();
   posts.push(post);
   writePosts(posts);
 }
 
-export function updatePost(slug: string, changes: Partial<Post>): void {
+export async function updatePost(slug: string, changes: Partial<Post>): void {
   const posts = getAllPosts();
   const index = posts.findIndex((post) => slugify(post.title) === slug);
   // if Post not found, cancel
@@ -50,7 +54,7 @@ export function updatePost(slug: string, changes: Partial<Post>): void {
   writePosts(posts);
 }
 
-export function deletePost(slug: string): void {
+export async function deletePost(slug: string): void {
   const posts = getAllPosts();
   const filtered = posts.filter((post) => slugify(post.title) !== slug);
   writePosts(filtered);
