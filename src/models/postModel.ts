@@ -37,7 +37,8 @@ export async function getPostBySlug(slug: string): Promise<Post | undefined> {
 //   fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2), "utf8");
 // }
 
-export async function addPost(post: Post): Promise<number> {
+export async function addPost(post: Omit<Post, "id">): Promise<number> {
+  // Omit<Post, "id"> explicitly excludes id — SQLite auto-generates it via AUTOINCREMENT
   const db = getDB();
   const result = await db.run(
     `INSERT INTO posts ( title,
@@ -136,4 +137,13 @@ export async function deletePostById(id: number): Promise<void> {
   // const posts = getAllPosts();
   // const filtered = posts.filter((post) => slugify(post.title) !== slug);
   // writePosts(filtered);
+}
+
+export async function getAllPostsWithAuthors(): Promise<Post[]> {
+  const db = getDB();
+  return await db.all<Post[]>(
+    `SELECT posts.*, authors.name AS author_name
+    FROM posts
+    JOIN authors ON posts.author_id = authors.id`,
+  );
 }

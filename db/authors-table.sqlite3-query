@@ -1,0 +1,6 @@
+-- database: ./blog.db
+
+
+SELECT posts.*, authors.name AS author_name
+FROM posts
+JOIN authors ON posts.author_id = authors.id;
