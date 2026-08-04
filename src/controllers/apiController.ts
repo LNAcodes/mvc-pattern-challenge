@@ -1,6 +1,12 @@
 import { type Request, type Response } from "express";
 
-import { getAllPosts } from "../models/postModel.js";
+import {
+  getAllPosts,
+  updatePostById as updatePostByIdInDB,
+  deletePostById as deletePostByIdInDB,
+} from "../models/postModel.js";
+
+// console.log("apiController loaded");
 
 export async function getRandomPost(_req: Request, res: Response) {
   const posts = await getAllPosts();
@@ -28,6 +34,9 @@ export async function updatePostById(
   req: Request<{ id: string }>,
   res: Response,
 ) {
+  console.log("updatePostById controller hit!");
+  console.log("id:", req.params.id);
+  console.log("body:", req.body);
   try {
     const id = Number(req.params.id);
     const changes = {
@@ -37,9 +46,26 @@ export async function updatePostById(
       teaser: req.body.teaser,
       content: req.body.content,
     };
-    await updatePost(id, changes);
+    console.log("calling updatePostByIdInDB with:", id, changes);
+    await updatePostByIdInDB(id, changes);
     res.status(200).json({ message: "Post updated" });
   } catch (err) {
+    console.log("error:", err);
     res.status(500).json({ error: "Failed to update post" });
+  }
+}
+
+export async function deletePostById(
+  req: Request<{ id: string }>,
+  res: Response,
+) {
+  try {
+    const id = Number(req.params.id);
+    console.log("updatePostById called with id:", id);
+    console.log("req.body:", req.body);
+    await deletePostByIdInDB(id);
+    res.status(200).json({ message: "Post deleted" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete post" });
   }
 }

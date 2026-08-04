@@ -1,0 +1,15 @@
+info:
+  name: Edit one thing
+  type: http
+  seq: 20
+
+http:
+  method: PUT
+  url: http://localhost:3000/api/posts/1
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

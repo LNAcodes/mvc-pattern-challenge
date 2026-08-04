@@ -16,6 +16,7 @@ const app = express();
 app.set("view engine", "njk");
 // 2. body-parser middleware - must come before routes!
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

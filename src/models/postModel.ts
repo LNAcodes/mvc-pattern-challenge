@@ -101,3 +101,39 @@ export async function deletePost(slug: string): Promise<void> {
   // const filtered = posts.filter((post) => slugify(post.title) !== slug);
   // writePosts(filtered);
 }
+
+export async function updatePostById(
+  id: number,
+  changes: Partial<Post>,
+): Promise<void> {
+  const db = getDB();
+  await db.run(
+    `UPDATE posts SET title = @title, image = @image, author = @author, teaser = @teaser, content = @content
+    WHERE id = @id`,
+    {
+      "@title": changes.title,
+      "@image": changes.image,
+      "@author": changes.author,
+      "@teaser": changes.teaser,
+      "@content": changes.content,
+      "@id": id,
+    },
+  );
+  // TO DO:
+  // const posts = getAllPosts();
+  // const index = posts.findIndex((post) => slugify(post.title) === slug);
+  // // if Post not found, cancel
+  // if (index === -1) return;
+  // // change the post at this position, keep all old fields, change new fields
+  // posts[index] = { ...posts[index], ...changes };
+  // writePosts(posts);
+}
+
+export async function deletePostById(id: number): Promise<void> {
+  const db = getDB();
+  await db.run(`DELETE FROM posts WHERE id = @id`, { "@id": id });
+  // TO DO:
+  // const posts = getAllPosts();
+  // const filtered = posts.filter((post) => slugify(post.title) !== slug);
+  // writePosts(filtered);
+}
