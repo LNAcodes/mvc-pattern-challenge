@@ -5,11 +5,20 @@ info:
 
 http:
   method: POST
-  url: http://localhost:3000/admin/posts/:slug
-  params:
-    - name: slug
-      value: ""
-      type: path
+  url: http://localhost:3000/admin/posts/black-the-absence-not-the-presence-of-color
+  body:
+    type: form-urlencoded
+    data:
+      - name: title
+        value: Updated Title
+      - name: image
+        value: test.jpg
+      - name: author
+        value: Peter Parker
+      - name: teaser
+        value: Updated Teaser
+      - name: content
+        value: <p>Updated Content</p>
   auth: inherit
 
 settings:

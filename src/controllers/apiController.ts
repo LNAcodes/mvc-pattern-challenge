@@ -23,3 +23,23 @@ export async function getStats(_req: Request, res: Response) {
   const newestPost = sortedPosts[0];
   res.json({ totalPosts, newestPostDate: newestPost.createdAt });
 }
+
+export async function updatePostById(
+  req: Request<{ id: string }>,
+  res: Response,
+) {
+  try {
+    const id = Number(req.params.id);
+    const changes = {
+      title: req.body.title,
+      image: req.body.image,
+      author: req.body.author,
+      teaser: req.body.teaser,
+      content: req.body.content,
+    };
+    await updatePost(id, changes);
+    res.status(200).json({ message: "Post updated" });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update post" });
+  }
+}

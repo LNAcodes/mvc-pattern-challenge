@@ -1,6 +1,7 @@
 import { getDB } from "../db/database.js";
 
 export interface Post {
+  id?: number;
   title: string;
   image: string;
   author: string;
@@ -36,17 +37,49 @@ export async function getPostBySlug(slug: string): Promise<Post | undefined> {
 //   fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2), "utf8");
 // }
 
-export async function addPost(post: Post): Promise<void> {
-  // TO DO:
-  // const posts = getAllPosts();
-  // posts.push(post);
-  // writePosts(posts);
+export async function addPost(post: Post): Promise<number> {
+  const db = getDB();
+  const result = await db.run(
+    `INSERT INTO posts ( title,
+  image,
+  author,
+  createdAt,
+  teaser,
+  content) VALUES (@title, @image, @author, @createdAt, @teaser, @content)`,
+    {
+      "@title": post.title,
+      "@image": post.image,
+      "@author": post.author,
+      "@createdAt": post.createdAt,
+      "@teaser": post.teaser,
+      "@content": post.content,
+    },
+  );
+  return result.lastID!;
 }
 
 export async function updatePost(
   slug: string,
   changes: Partial<Post>,
 ): Promise<void> {
+  const db = getDB();
+  const post = await getPostBySlug(slug);
+  // console.log("found post:", post);
+  if (!post) return;
+  // console.log("updating with id:", post.id);
+  // console.log("changes:", changes);
+  await db.run(
+    `UPDATE posts SET title = @title, image = @image, author = @author, teaser = @teaser, content = @content
+    WHERE id = @id`,
+    {
+      "@title": changes.title,
+      "@image": changes.image,
+      "@author": changes.author,
+      "@teaser": changes.teaser,
+      "@content": changes.content,
+      "@id": post.id,
+    },
+  );
   // TO DO:
   // const posts = getAllPosts();
   // const index = posts.findIndex((post) => slugify(post.title) === slug);
@@ -58,6 +91,11 @@ export async function updatePost(
 }
 
 export async function deletePost(slug: string): Promise<void> {
+  const db = getDB();
+  const post = await getPostBySlug(slug);
+  if (!post) return;
+
+  await db.run(`DELETE FROM posts WHERE id = @id`, { "@id": post.id });
   // TO DO:
   // const posts = getAllPosts();
   // const filtered = posts.filter((post) => slugify(post.title) !== slug);

@@ -23,22 +23,27 @@ export function showNewPostForm(_req: Request, res: Response) {
 }
 
 export async function createPost(req: Request, res: Response) {
-  const newPost = {
-    title: req.body.title,
-    image: req.body.image,
-    author: req.body.author,
-    createdAt: Number(req.body.createdAt),
-    teaser: req.body.teaser,
-    content: sanitizeHtml(req.body.content, {
-      allowedTags: ["p", "h1", "h2", "h3", "a", "ul", "ol", "li", "img"],
-      allowedAttributes: {
-        a: ["href"],
-        img: ["src", "alt"],
-      },
-    }),
-  };
-  addPost(newPost);
-  res.redirect("/admin");
+  // console.log("req.body:", req.body);
+  try {
+    const newPost = {
+      title: req.body.title,
+      image: req.body.image,
+      author: req.body.author,
+      createdAt: Date.now(),
+      teaser: req.body.teaser,
+      content: sanitizeHtml(req.body.content, {
+        allowedTags: ["p", "h1", "h2", "h3", "a", "ul", "ol", "li", "img"],
+        allowedAttributes: {
+          a: ["href"],
+          img: ["src", "alt"],
+        },
+      }),
+    };
+    await addPost(newPost);
+    res.redirect("/admin");
+  } catch (err) {
+    res.status(500).json({ error: "Failed to create post" });
+  }
 }
 
 export async function showEditPostForm(
@@ -67,28 +72,37 @@ export async function handleUpdatePost(
   req: Request<{ slug: string }>,
   res: Response,
 ) {
-  // slug aus URL holen
-  const slug = req.params.slug;
-  // changes aus req.body bauen
-  const changes = {
-    title: req.body.title,
-    image: req.body.image,
-    author: req.body.author,
-    createdAt: req.body.createdAt,
-    teaser: req.body.teaser,
-    content: req.body.content,
-  };
-  // updatePost() aufrufen
-  updatePost(slug, changes);
-  // redirect
-  res.redirect("/admin");
+  try {
+    // slug aus URL holen
+    const slug = req.params.slug;
+    // changes aus req.body bauen
+    const changes = {
+      title: req.body.title,
+      image: req.body.image,
+      author: req.body.author,
+      createdAt: req.body.createdAt,
+      teaser: req.body.teaser,
+      content: req.body.content,
+    };
+    // updatePost() aufrufen
+    await updatePost(slug, changes);
+    // redirect
+    res.redirect("/admin");
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update post" });
+  }
 }
 
 export async function handleDeletePost(
   req: Request<{ slug: string }>,
   res: Response,
 ) {
-  const slug = req.params.slug;
-  deletePost(slug);
-  res.redirect("/admin");
+  try {
+    const slug = req.params.slug;
+    // console.log("Deleting post with slug:", slug);
+    await deletePost(slug);
+    res.redirect("/admin");
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete post" });
+  }
 }

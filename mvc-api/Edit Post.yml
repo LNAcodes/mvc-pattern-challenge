@@ -5,11 +5,7 @@ info:
 
 http:
   method: GET
-  url: http://localhost:3000/admin/posts/:slug/edit
-  params:
-    - name: slug
-      value: ""
-      type: path
+  url: http://localhost:3000/admin/posts/black-the-absence-not-the-presence-of-color/edit
   auth: inherit
 
 settings:

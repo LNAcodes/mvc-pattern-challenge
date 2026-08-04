@@ -5,11 +5,7 @@ info:
 
 http:
   method: POST
-  url: http://localhost:3000/admin/posts/:slug/delete
-  params:
-    - name: slug
-      value: ""
-      type: path
+  url: http://localhost:3000/admin/test-post/delete
   auth: inherit
 
 settings:
